@@ -25,12 +25,3 @@ jobs:
 
     - name: Test
       run: cd backend && go test -race -covermode=atomic -coverprofile=coverage.out -v ./...
-
-    - name: Upload coverage to codeclimate
-      uses: paambaati/codeclimate-action@v3.0.0
-      env:
-        CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TOKEN }}
-      with:
-        coverageCommand: ''
-        prefix: 'github.com/brokeyourbike/pro-google-keywords-opencart/backend'
-        coverageLocations: ./backend/coverage.out:gocov
