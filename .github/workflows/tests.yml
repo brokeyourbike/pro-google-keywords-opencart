@@ -31,6 +31,6 @@ jobs:
       env:
         CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TOKEN }}
       with:
-        coverageCommand: 'cd backend'
+        coverageCommand: ''
         prefix: 'github.com/brokeyourbike/go-fizz-your-buzz'
-        coverageLocations: ./coverage.out:gocov
+        coverageLocations: ./backend/coverage.out:gocov
