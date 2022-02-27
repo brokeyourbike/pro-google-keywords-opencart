@@ -26,27 +26,19 @@ func (s *server) routes() {
 	s.router.Get("/v1/ping", s.handlePing())
 }
 
-func (s *server) respond(w http.ResponseWriter, r *http.Request, data interface{}, status int) {
-	w.Header().Set("Content-type", "application/json")
-	w.WriteHeader(status)
-
-	if data != nil {
-		json.NewEncoder(w).Encode(data)
-	}
-}
-
 func (s *server) handlePing() http.HandlerFunc {
 	type response struct {
 		Pong bool `json:"pong"`
 	}
 
 	return func(w http.ResponseWriter, r *http.Request) {
-		s.respond(w, r, response{Pong: true}, http.StatusOK)
+		w.Header().Set("Content-type", "application/json")
+		json.NewEncoder(w).Encode(response{Pong: true})
 	}
 }
 
-func newDB() *badger.DB {
-	db, err := badger.Open(badger.DefaultOptions("/tmp/badger"))
+func newDB(path string) *badger.DB {
+	db, err := badger.Open(badger.DefaultOptions(path))
 
 	if err != nil {
 		log.Fatal(err)
@@ -63,7 +55,7 @@ func main() {
 
 	srv := server{
 		router: chi.NewRouter(),
-		db:     newDB(),
+		db:     newDB("/tmp/badger"),
 	}
 
 	srv.middlewares()
